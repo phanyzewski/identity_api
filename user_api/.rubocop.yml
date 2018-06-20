@@ -1,0 +1,49 @@
+require:
+  - rubocop-rspec
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  DisplayCopNames: true
+  ExtraDetails: true
+  Exclude:
+  - 'bin/**/*'
+  - 'config/**/*.rb'
+  - 'db/**/*.rb'
+  - 'features/**/*.rb'
+  - 'lib/**/*.rake'
+  - 'vendor/bundle/**/*'
+
+Rails:
+  Enabled: true
+
+# Lint/AssignmentInCondition:
+#   Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Layout/AlignParameters:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+    - 'app/graphql/types/*.rb'
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Style/Documentation:
+  Include:
+    - lib/**/*
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
