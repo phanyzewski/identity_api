@@ -83,15 +83,15 @@ RSpec.describe 'Users API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/v1/users', params: { title: 'Foobar' } }
+      before { post '/v1/users', params: { name: 'Foobar', date_of_birth: '2001-01-01' } }
 
       it 'returns status code 422' do
-        expect(response).to have_http_status(:unprocessable_entry)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Created by can't be blank/)
+          .to match(/Validation failed: Email can't be blank, Email is not a valid email address/)
       end
     end
   end

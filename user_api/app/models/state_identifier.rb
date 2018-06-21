@@ -7,8 +7,8 @@ class StateIdentifier < ApplicationRecord
   validates :state, presence: true
   validates :expiration_date, presence: true
 
-  def expired?
-    # NOTE: Might want to consider adding city to get an accurate timezone for this function
-    expiration_date < Time.now.in_time_zone(State)
+  def expired
+    # NOTE: Might want to consider adding zipcode to get an accurate timezone for this function
+    expiration_date < Date.current
   end
 end
