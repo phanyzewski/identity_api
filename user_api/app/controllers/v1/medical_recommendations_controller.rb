@@ -25,6 +25,7 @@ module V1
     # PUT /v1/users/:id/medical_recommendations/:id
     def update
       @medical_recommendation.update(recommendation_params)
+      store_image if recommendation_params.include?(:identification_card)
       head :no_content
     end
 
@@ -42,12 +43,19 @@ module V1
         :medical_recommendation_number,
         :issuer,
         :state,
-        :expiration_date
+        :expiration_date,
+        :identification_card
       )
     end
 
     def set_recommendation
       @medical_recommendation = MedicalRecommendation.find_by!(id: params[:id], user: params[:user_id])
+    end
+
+    def store_image
+      @medical_recommendation.identification_card.purge if @medical_recommendation.identification_card.attached?
+      @medical_recommendation.identification_card.attach(params[:identification_card])
+      @medical_recommendation.image_url = url_for(@medical_recommendation.identification_card)
     end
   end
 end

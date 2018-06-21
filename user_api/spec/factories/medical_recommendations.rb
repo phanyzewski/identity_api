@@ -12,5 +12,13 @@ FactoryBot.define do
     trait :expired do
       expiration_date { Faker::Date.backward(3) }
     end
+
+    trait :new_card do
+      identification_card {
+        File.open(
+          Rails.root.join('spec', 'factories', 'images', 'mmic.png'), filename: 'mmic.png', content_type: 'image/png'
+        )
+      }
+    end
   end
 end

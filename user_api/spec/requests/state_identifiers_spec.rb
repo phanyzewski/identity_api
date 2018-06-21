@@ -94,23 +94,30 @@ RSpec.describe 'State Identifier API', type: :request do
 
   # Test suite for PUT /v1/state_identifiers/:id
   describe 'PUT /v1/users/:id/state_identifiers/:id' do
+    let(:file) { fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'mmic.png'), 'image/png') }
     let(:valid_updated_attributes) do
       {
-        # user: user,
         state_id_number: 123,
         state: 'Alaska',
-        expiration_date: '2023-03-03'
+        expiration_date: '2023-03-03',
+        identification_card: file
       }
     end
 
     context 'when the record exists' do
-      before { put "/v1/users/#{user_id}/state_identifiers/#{state_id}", params: valid_updated_attributes }
+      let(:post) { put "/v1/users/#{user_id}/state_identifiers/#{state_id}", params: valid_updated_attributes }
 
       it 'updates the record' do
+        post
         expect(response.body).to be_empty
       end
 
+      it 'attaches the uploaded file' do
+        expect { post }.to change { state_identifier.reload.identification_card.attached? }.from(false).to(true)
+      end
+
       it 'returns status code 204' do
+        post
         expect(response).to have_http_status(:no_content)
       end
     end

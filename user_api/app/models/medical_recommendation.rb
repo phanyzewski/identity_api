@@ -2,6 +2,7 @@
 
 class MedicalRecommendation < ApplicationRecord
   belongs_to :user
+  has_one_attached :identification_card
 
   validates :medical_recommendation_number, presence: true
   validates :issuer, presence: true

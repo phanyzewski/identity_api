@@ -103,18 +103,26 @@ RSpec.describe 'Medical Recommendations API', type: :request do
         medical_recommendation_number: 123,
         issuer: 'person',
         state: 'Alaska',
-        expiration_date: '2023-03-03'
+        expiration_date: '2023-03-03',
+        identification_card: file
       }
     end
 
     context 'when the record exists' do
-      before { put "/v1/users/#{user_id}/medical_recommendations/#{recommendation_id}", params: updated_attributes }
+      let(:file) { fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'mmic.png'), 'image/png') }
+      let(:post) { put "/v1/users/#{user_id}/medical_recommendations/#{recommendation_id}", params: updated_attributes }
 
       it 'updates the record' do
+        post
         expect(response.body).to be_empty
       end
 
+      it 'attaches the uploaded file' do
+        expect { post }.to change { medical_recommendation.reload.identification_card.attached? }.from(false).to(true)
+      end
+
       it 'returns status code 204' do
+        post
         expect(response).to have_http_status(:no_content)
       end
     end

@@ -25,6 +25,7 @@ module V1
     # PUT /v1/users/:id/state_identifiers/:id
     def update
       @state_identifier.update(identifier_params)
+      store_image if identifier_params.include?(:identification_card)
       head :no_content
     end
 
@@ -41,12 +42,19 @@ module V1
         :user_id,
         :state_id_number,
         :state,
-        :expiration_date
+        :expiration_date,
+        :identification_card
       )
     end
 
     def set_identifier
       @state_identifier = StateIdentifier.find_by!(id: params[:id], user: params[:user_id])
+    end
+
+    def store_image
+      @state_identifier.identification_card.purge if @state_identifier.identification_card.attached?
+      @state_identifier.identification_card.attach(params[:identification_card])
+      @state_identifier.image_url = url_for(@state_identifier.identification_card)
     end
   end
 end

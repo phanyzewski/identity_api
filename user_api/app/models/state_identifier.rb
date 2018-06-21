@@ -2,6 +2,7 @@
 
 class StateIdentifier < ApplicationRecord
   belongs_to :user
+  has_one_attached :identification_card
 
   validates :state_id_number, presence: true
   validates :state, presence: true
