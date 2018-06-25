@@ -9,10 +9,16 @@ require 'spec_helper'
 require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'simplecov'
+
+SimpleCov.start
 require 'factory_bot_rails'
 require 'faker'
 require 'pry'
 require 'rspec/collection_matchers'
+require 'simplecov'
+
+SimpleCov.start
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

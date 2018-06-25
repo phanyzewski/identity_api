@@ -43,6 +43,7 @@ group :development, :test do
 
   gem 'rubocop', '~> 0.52', require: false
   gem 'rubocop-rspec', '~> 1.5', require: false
+  gem 'simplecov', require: false, group: :test
 end
 
 group :development do
