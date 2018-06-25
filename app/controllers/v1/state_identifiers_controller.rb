@@ -7,18 +7,21 @@ module V1
     # Get /v1/users/:id/users
     def index
       @identifiers = StateIdentifier.where(user_id: params[:user_id])
-      render json: @identifiers
+      json_string = StateIdentifierSerializer.new(@identifiers).serialized_json
+      render json: json_string
     end
 
     # POST /v1/users/:id/state_identifiers
     def create
       @state_identifier = StateIdentifier.create!(identifier_params)
-      render json: @state_identifier, status: :created
+      store_image if identifier_params.include?(:identification_card)
+      json_string = StateIdentifierSerializer.new(@state_identifier).serialized_json
+      render json: json_string, status: :created
     end
 
     # GET /v1/users/:id/state_identifiers/:id
     def show
-      json_string = StateIdentifierSerializer.new(@state_identifier).attributes
+      json_string = StateIdentifierSerializer.new(@state_identifier).serialized_json
       render json: json_string
     end
 
@@ -55,6 +58,7 @@ module V1
       @state_identifier.identification_card.purge if @state_identifier.identification_card.attached?
       @state_identifier.identification_card.attach(params[:identification_card])
       @state_identifier.image_url = url_for(@state_identifier.identification_card)
+      @state_identifier.save
     end
   end
 end

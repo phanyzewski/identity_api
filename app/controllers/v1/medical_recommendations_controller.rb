@@ -7,18 +7,21 @@ module V1
     # Get /v1/users/:id/medical_recommendations
     def index
       @recommendations = MedicalRecommendation.where(user_id: params[:user_id])
-      render json: @recommendations
+      json_string = MedicalRecommendationSerializer.new(@recommendations).serialized_json
+      render json: json_string
     end
 
     # POST /v1/users/:id/medical_recommendations
     def create
       @medical_recommendation = MedicalRecommendation.create!(recommendation_params)
-      render json: @medical_recommendation, status: :created
+      store_image if recommendation_params.include?(:identification_card)
+      json_string = MedicalRecommendationSerializer.new(@medical_recommendation).serialized_json
+      render json: json_string, status: :created
     end
 
     # GET /v1/users/:id/medical_recommendations/:id
     def show
-      json_string = MedicalRecommendationSerializer.new(@medical_recommendation).attributes
+      json_string = MedicalRecommendationSerializer.new(@medical_recommendation).serialized_json
       render json: json_string
     end
 
@@ -56,6 +59,7 @@ module V1
       @medical_recommendation.identification_card.purge if @medical_recommendation.identification_card.attached?
       @medical_recommendation.identification_card.attach(params[:identification_card])
       @medical_recommendation.image_url = url_for(@medical_recommendation.identification_card)
+      @medical_recommendation.save
     end
   end
 end

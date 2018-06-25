@@ -7,18 +7,21 @@ module V1
     # Get /v1/users
     def index
       @users = User.all
-      render json: @users
+      json_string = UserSerializer.new(@users).serialized_json
+      render json: json_string
     end
 
     # POST /v1/users
     def create
       @user = User.create!(user_params)
-      render json: @user, status: :created
+      json_string = UserSerializer.new(@user).serialized_json
+      render json: json_string, status: :created
     end
 
     # GET /v1/users/:id
     def show
-      render json: @user
+      json_string = UserSerializer.new(@user).serialized_json
+      render json: json_string
     end
 
     # PUT /users/:id

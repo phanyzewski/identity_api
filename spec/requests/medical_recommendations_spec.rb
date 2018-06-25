@@ -34,7 +34,7 @@ RSpec.describe 'Medical Recommendations API', type: :request do
 
     context 'when the record exists' do
       it 'returns an identifier' do
-        expect(json).not_to be_empty
+        expect(json.dig('data', 'id')).not_to be_empty
       end
 
       it 'returns status code 200' do
@@ -71,7 +71,7 @@ RSpec.describe 'Medical Recommendations API', type: :request do
       before { post "/v1/users/#{user_id}/medical_recommendations", params: valid_attributes }
 
       it 'creates a medical_recommendation' do
-        expect(json['medical_recommendation_number']).to eq(123)
+        expect(json.dig('data', 'attributes', 'medical_recommendation_number')).to eq(123)
       end
 
       it 'returns status code 201' do
@@ -97,6 +97,7 @@ RSpec.describe 'Medical Recommendations API', type: :request do
 
   # Test suite for PUT /v1/medical_recommendation/:id
   describe 'PUT /v1/users/:id/medical_recommendations/:id' do
+    let(:file) { fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'mmic.png'), 'image/png') }
     let(:updated_attributes) do
       {
         # user: user,
@@ -109,7 +110,6 @@ RSpec.describe 'Medical Recommendations API', type: :request do
     end
 
     context 'when the record exists' do
-      let(:file) { fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'mmic.png'), 'image/png') }
       let(:post) { put "/v1/users/#{user_id}/medical_recommendations/#{recommendation_id}", params: updated_attributes }
 
       it 'updates the record' do
@@ -148,7 +148,7 @@ RSpec.describe 'Medical Recommendations API', type: :request do
       let(:recommendation_id) { medical_recommendation.id }
 
       it 'parameter expired is true' do
-        expect(json['expired']).to be true
+        expect(json.dig('data', 'attributes', 'expired')).to be true
       end
 
       it 'returns status code 200' do
@@ -158,7 +158,7 @@ RSpec.describe 'Medical Recommendations API', type: :request do
 
     context 'when the identificaiton card is not expired' do
       it 'parameter expired is false' do
-        expect(json['expired']).to be false
+        expect(json.dig('data', 'attributes', 'expired')).to be false
       end
 
       it 'returns status code 200' do

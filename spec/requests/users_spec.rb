@@ -20,7 +20,7 @@ RSpec.describe 'Users API', type: :request do
     end
 
     it 'returns all users' do
-      expect(json.size).to eq(10)
+      expect(json.dig('data').size).to eq(10)
     end
 
     it 'returns status code 200' do
@@ -38,7 +38,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'return the correct user' do
-        expect(json['id']).to eq(user_id)
+        expect(json.dig('data', 'id')).to eq(user_id.to_s)
       end
 
       it 'returns status code 200' do
@@ -74,7 +74,7 @@ RSpec.describe 'Users API', type: :request do
       before { post '/v1/users', params: valid_attributes }
 
       it 'creates a user' do
-        expect(json['name']).to eq('Jon Snow')
+        expect(json.dig('data', 'attributes', 'name')).to eq('Jon Snow')
       end
 
       it 'returns status code 201' do

@@ -70,7 +70,7 @@ RSpec.describe 'State Identifier API', type: :request do
       before { post "/v1/users/#{user_id}/state_identifiers", params: valid_attributes }
 
       it 'creates a state identifier' do
-        expect(json['state_id_number']).to eq('123')
+        expect(json.dig('data', 'attributes', 'state_id_number')).to eq('123')
       end
 
       it 'returns status code 201' do
@@ -143,7 +143,7 @@ RSpec.describe 'State Identifier API', type: :request do
       let(:state_id) { state_identifier.id }
 
       it 'returns an identifier' do
-        expect(json['expired']).to be true
+        expect(json.dig('data', 'attributes', 'expired')).to be true
       end
 
       it 'returns status code 200' do
@@ -153,7 +153,7 @@ RSpec.describe 'State Identifier API', type: :request do
 
     context 'when the identificaiton card is not expired' do
       it 'returns a not found message' do
-        expect(json['expired']).to be false
+        expect(json.dig('data', 'attributes', 'expired')).to be false
       end
     end
   end
