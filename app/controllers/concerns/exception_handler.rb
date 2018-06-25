@@ -5,10 +5,6 @@ module ExceptionHandler
   extend ActiveSupport::Concern
 
   included do
-    rescue_from StandardError do |e|
-      render json: { message: e.message }, status: :standard_error
-    end
-
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
     end
