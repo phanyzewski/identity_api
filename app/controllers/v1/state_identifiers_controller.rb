@@ -7,19 +7,19 @@ module V1
     # Get /v1/users/:id/users
     def index
       @identifiers = StateIdentifier.where(user_id: params[:user_id])
-      render_response(@identifiers)
+      render json: @identifiers
     end
 
     # POST /v1/users/:id/state_identifiers
     def create
       @state_identifier = StateIdentifier.create!(identifier_params)
-      render_response(@state_identifier, :created)
+      render json: @state_identifier, status: :created
     end
 
     # GET /v1/users/:id/state_identifiers/:id
     def show
       json_string = StateIdentifierSerializer.new(@state_identifier).attributes
-      render_response(json_string)
+      render json: json_string
     end
 
     # PUT /v1/users/:id/state_identifiers/:id

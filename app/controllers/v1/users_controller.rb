@@ -7,18 +7,18 @@ module V1
     # Get /v1/users
     def index
       @users = User.all
-      render_response(@users)
+      render json: @users
     end
 
     # POST /v1/users
     def create
       @user = User.create!(user_params)
-      render_response(@user, :created)
+      render json: @user, status: :created
     end
 
     # GET /v1/users/:id
     def show
-      render_response(@user)
+      render json: @user
     end
 
     # PUT /users/:id

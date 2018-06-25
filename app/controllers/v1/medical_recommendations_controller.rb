@@ -7,19 +7,19 @@ module V1
     # Get /v1/users/:id/medical_recommendations
     def index
       @recommendations = MedicalRecommendation.where(user_id: params[:user_id])
-      render_response(@recommendations)
+      render json: @recommendations
     end
 
     # POST /v1/users/:id/medical_recommendations
     def create
       @medical_recommendation = MedicalRecommendation.create!(recommendation_params)
-      render_response(@medical_recommendation, :created)
+      render json: @medical_recommendation, status: :created
     end
 
     # GET /v1/users/:id/medical_recommendations/:id
     def show
       json_string = MedicalRecommendationSerializer.new(@medical_recommendation).attributes
-      render_response(json_string)
+      render json: json_string
     end
 
     # PUT /v1/users/:id/medical_recommendations/:id
