@@ -42,7 +42,7 @@ group :development, :test do
   gem 'rspec-collection_matchers', require: false
   gem 'rspec-rails'
 
-  gem 'rubocop', '~> 0.52', require: false
+  gem 'rubocop', '~> 0.80', require: false
   gem 'rubocop-rspec', '~> 1.5', require: false
   gem 'simplecov', require: false, group: :test
 end
